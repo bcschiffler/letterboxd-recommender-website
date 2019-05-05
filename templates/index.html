@@ -1,0 +1,68 @@
+<doctype html>
+<link rel="stylesheet" link href="/static/css/style.css">
+
+<head>
+    <title>Letterboxd Recommendations</title>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-83404701-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-83404701-2');
+</script>
+</head>
+
+<a href="https://letterboxd.com" target="_blank"><img src="https://a.ltrbxd.com/logos/letterboxd-logo-h-neg-rgb-1000px.png" style="width:30%;" alt="Letterboxd"></a>
+
+
+<h1>Recommendations</h1>
+
+<br><br>
+
+<p>Search for user:</p>
+
+{% from "_formhelpers.html" import render_field %}
+<form method=post>
+<div id="searchBarWrap">
+    {{ render_field(form.search) }}
+</div>
+<br><br>
+  <input class="button" name="action" type=submit value=Search> &nbsp; <input class="button" name="action" type=submit value=Random>
+</form>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<br><br>
+
+{% if results %}
+
+<h2>Movie Recommendations</h2>
+  {% for result in results %}
+    <a href="{{ "https://letterboxd.com" + result.path }}" target="_blank"><img src="{{ result.image_src }}" style="height:35%;" alt="{{ result.name }}"></a>&nbsp;&nbsp;
+  {% endfor %}
+{% endif %}
+
+
+{% if user_results %}
+<br><br>
+<h2>User Recommendations</h2>
+  {% for user_result in user_results %}
+    <a href="{{ "https://letterboxd.com/" + user_result.rec_users }}" target="_blank">{{ user_result.rec_users }}</a>&nbsp;&nbsp;
+  {% endfor %}
+{% endif %}
+
+<br><br><br>
+
+<footer>
+  <p>Created by: <a href="https://bcschiffler.com" target="_blank">Björn Schiffler</a></p>
+</footer>
